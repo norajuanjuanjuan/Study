@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>demo</title>
+    <script id="scriptApi" type="text/javascript" src="https://www.51jianxie.com/ds-vpath/web-apps/apps/api/documents/api.js"></script>
+</head>
+
+<body>
+    <div  id="placeholder"></div>
+    <script type="text/javascript">
+    	window.onload=function(){
+    		initEditor("","http://sdk.51changxie.com/demo/OEMContract.docx",true,true,true,true,"3844729f-f7f2-4f4e-b714-424512dcf144","edit","",{"comment":false,"download":true,"edit":true,"print":true,"review":false})
+    	}
+	    function initEditor(username,docUrl, titlebarFlag, rightPanelFlag, leftPanelFlag, toobarFlag, docKey, mode, type, permission) {
+	        //mode for editor
+
+	        window.mode = window.mode || mode || "view";
+	        mode = window.mode;
+
+	        //mode for editor
+	        window.type = window.type || type || "desktop";
+	        type = window.type;
+
+	        //url for document
+	        // window.docUrl = document.getElementById("documentUrl").value;
+	        window.docUrl = docUrl;
+	        //key for chaching and collaborate editing
+	        window.docKey = docKey;
+
+	        //type for document
+	        var docType = docUrl.substring(docUrl.lastIndexOf(".") + 1).trim().toLowerCase();
+	        //type for editor
+	        var documentType = getDocumentType(docType);
+
+
+	        window.permission = permission;
+	        window.user = username;
+
+	        window.user = window.user || "测试"
+	        var id = window.user + "-4"
+	        //CXO_API.CXEditor
+	        //creating object editing
+	        var onDocumentReady = function() {
+	            //editor.destroyEditor();
+
+	        }
+	        var onAppReady = function() {
+
+	        }
+
+	        var editor = new CXO_API.CXEditor("placeholder", {
+	            type: type,
+	            width: (type == "desktop" ? "920px" : undefined),
+	            height: (type == "desktop" ? "517px" : undefined),
+	            documentType: documentType,
+	            token: "eyJ0eXBlIjoiMSIsImFsZyI6IkhTNTEyIn0.e30.RgxbmTaMyvL4cYnOg2DH03JghyUeIlLTiFDZrxqM4Ai_8XGv0K1qw0DB2r9EDRmiLb9ROxzzg36J62V-2IvaXA",
+	            document: {
+	                title: docUrl,
+	                url: docUrl,
+	                fileType: docType,
+	                key: docKey + 2,
+	                permissions: window.permission
+	            },
+	            editorConfig: {
+	                mode: mode,
+	                user: {
+	                    "id": id,
+	                    "name": window.user
+	                },
+	                customization: {
+	                    about: true,
+	                    chat: false,
+	                    comments: true,
+	                    zoom: 50,
+	                    leftMenu: leftPanelFlag,
+	                    rightMenu: rightPanelFlag,
+			    toolbar: toobarFlag,
+			    displayTitle:titlebarFlag,
+	                    header: true,
+	                    statusBar: true,
+			    autosave: false,
+		            forcesave: false
+                    },
+	            },
+	            events: {
+	                'onDocumentReady': onDocumentReady,
+	                'onAppReady': onAppReady
+	            }
+	        });
+	    }
+
+	    function key(k) {
+	        // var result = k.replace(new RegExp("[^0-9-.a-zA-Z_=]", "g"), "_") + (new Date()).getTime();
+	        var result = k.replace(new RegExp("[^0-9-.a-zA-Z_=]", "g"), "_");
+	        return result.substring(result.length - Math.min(result.length, 20));
+	    };
+	    var getDocumentType = function(ext) {
+	        if (".doc.docx.docm.dot.dotx.dotm.odt.fodt.ott.rtf.txt.html.htm.mht.pdf.djvu.fb2.epub.xps".indexOf(ext) != -1) return "text";
+	        if (".xls.xlsx.xlsm.xlt.xltx.xltm.ods.fods.ots.csv".indexOf(ext) != -1) return "spreadsheet";
+	        if (".pps.ppsx.ppsm.ppt.pptx.pptm.pot.potx.potm.odp.fodp.otp".indexOf(ext) != -1) return "presentation";
+	        return null;
+	    };
+    </script>
+</body>
+
+</html>
