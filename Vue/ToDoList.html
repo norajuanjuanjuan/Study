@@ -9,13 +9,17 @@
     <script src='./vue.js'></script>
 </head>
 <body>
-    <div id='app'>
-        <input type="text" v-model="inputValue"/>
-        <button v-on:click="handleBtnClick">提交</button>
+    <div id='root'>
+        <div>
+            <input type="text" v-model="inputValue"/>
+            <button v-on:click="handleBtnClick">提交</button>
+        </div>
         <ul>
            <!--<li v-for="item in list">{{item}}</li>-->
            <todo-item v-bind:content="item" 
-                      v-for="item in list">
+                      v-bind:index="index"
+                      v-for="(item,index) in list"
+                      @delete="handleItemDelete">
            </todo-item> 
         </ul>
     </div>
@@ -26,12 +30,17 @@
         // })//创建一个全局组件
 
         var TodoItem ={
-            props:['content'],
-            template:"<li>{{content}}</li>"
+            props:['content','index'],
+            template:"<li @click='handleItemClick'>{{content}}</li>",
+            methods:{
+                handleItemClick:function(){
+                    this.$emit("delete",this.index)
+                }
+            }
         }
 
         var app = new Vue({
-            el:'#app',
+            el:'#root',
             components:{
                 TodoItem : TodoItem
             },//局部组件注册
@@ -43,8 +52,20 @@
                 handleBtnClick:function(){
                 this.list.push(this.inputValue)
                 this.inputValue=''
+                },
+                handleItemDelete:function(index){
+                    this.list.splice(index,1)
                 }
-            }
+            },
+            //生命周期函数
+            beforeCreate:function(){alert("beforeCreate")},//初始化事件和生命周期之后
+            created:function(){alert("created")},//初始化注入和校验之后
+            beforeMount:function(){alert("beforeMount")},//模板和数据还未结合之前
+            mounted:function(){alert("Mounted")},//页面挂载之后
+            beforeUpdate:function(){alert("beforeUpdate")},//数据更新前
+            updated:function(){alert("updated")},//虚拟DOM重新渲染并应用更新后
+            beforeDestroy:function(){alert("beforeDestroy")},//调用vm.$destroy函数时
+            destroyed:function(){alert("destroyed")}//销毁完毕
         })
     </script>
 </body>
