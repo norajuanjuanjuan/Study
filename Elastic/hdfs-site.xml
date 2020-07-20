@@ -1,0 +1,40 @@
+<configuration>
+<property>
+  <name>dfs.replication</name>
+  <value>1</value>
+</property>
+<property>
+  <name>dfs.permissions</name>
+  <value>false</value>
+</property>
+<property>
+  <name>dfs.datanode.data.dir</name>
+  <value>/root/Tools/hadoop-2.10.0/tmp</value>
+</property>
+<!--<property>
+    <name>dfs.namenode.http-address</name>p
+    <value>hadoop01:50070</value> //这个可以不用配置
+</property>
+<property>
+    <name>dfs.datanode.http-address</name>p
+    <value>hadoop01:50070</value> //这个可以不用配置
+</property> -->
+<property>
+        <name> dfs.datanode.hostname</name>
+        <value>114.115.130.239</value>
+</property>
+<property>
+    <name>dfs.webhdfs.enabled</name>
+    <value>true</value>
+</property>
+<!-- appendToFile追加 -->
+<property>
+        <name>dfs.support.append</name>
+        <value>true</value>
+</property>
+
+<property>
+        <name>dfs.client.block.write.replace-datanode-on-failure.policy</name>
+        <value>NEVER</value>
+</property>
+</configuration>
