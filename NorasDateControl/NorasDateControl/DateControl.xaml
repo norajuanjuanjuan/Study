@@ -1,0 +1,122 @@
+﻿<UserControl x:Class="NorasDateControl.DateControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="35" d:DesignWidth="180" Loaded="DateControl_Loaded">
+    <Grid>
+        <Grid.Resources>
+            <Style x:Key="ButtonMouseOverStyle" TargetType="Button">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate  >
+                            <Border Name="border" BorderThickness="0" Background="Transparent" >
+                                <ContentPresenter HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Content="{TemplateBinding ContentControl.Content}" />
+                            </Border>
+                            <ControlTemplate.Triggers >
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background">
+                                        <Setter.Value>
+                                            <LinearGradientBrush>
+                                                <GradientStop Offset="0" Color="LightBlue" />
+                                                <GradientStop Offset="0.5" Color="Transparent" />
+                                                <GradientStop Offset="1" Color="LightBlue" />
+                                            </LinearGradientBrush>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter TargetName="border" Property="Background" Value="gray" />
+                                    <Setter TargetName="border" Property="BorderBrush" Value="gray" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="ButtonAppearanceStyle" TargetType="Button" BasedOn="{StaticResource ButtonMouseOverStyle}">
+                <Setter Property="Foreground" Value="#FF1D232D" />
+                <Setter Property="FontSize" Value="10" />
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+            <Style x:Key="UpButtonStyle" TargetType="Button" BasedOn="{StaticResource ButtonAppearanceStyle}">
+                <Setter Property="Content" Value="▲" />
+            </Style>
+            <Style x:Key="DownButtonStyle" TargetType="Button" BasedOn="{StaticResource ButtonAppearanceStyle}">
+                <Setter Property="Content" Value="▼" />
+            </Style>
+            <Style x:Key="SelectButtonStyle" TargetType="Button">
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Background" Value="Transparent" />
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Foreground" Value="#FF1D232D" />
+                <Setter Property="InputMethod.IsInputMethodEnabled" Value="False" />
+                <Setter Property="MinWidth" Value="45" />
+                <Setter Property="TextAlignment" Value="Center" />
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="Margin" Value="0" />
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30*" />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="30*" />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="30*"/>
+        </Grid.ColumnDefinitions>
+        <!--<Button Grid.Row="0" Grid.Column="0" x:Name="btn_UpYear" Style="{StaticResource UpButtonStyle}" Click="Btn_UpYear_Click" />
+        <Button Grid.Row="0" Grid.Column="2" x:Name="btn_UpMonth" Style="{StaticResource UpButtonStyle}" Click="Btn_UpMonth_Click"/>
+        <Button Grid.Row="0" Grid.Column="4" x:Name="btn_UpDay" Style="{StaticResource UpButtonStyle}" Click="Btn_UpDay_Click"/>-->
+        <TextBox  Grid.Column="0" x:Name="txt_Year" Text="{Binding Year,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                 PreviewKeyDown="Txt_Year_PreviewKeyDown"  PreviewTextInput="Txt_PreviewTextInput" 
+                 TextChanged="Txt_TextChanged"  LostFocus="Txt_LostFocus" 
+                  PreviewMouseLeftButtonUp="Txt_Year_PreviewMouseLeftButtonUp">
+        </TextBox>
+        <Label Grid.Column="1" Content="—" >
+        </Label>
+        <Popup x:Name="pop_Year" LostFocus="Lv_popup_LostFocus"
+                StaysOpen="False" PlacementTarget="{Binding ElementName=txt_Year}" Placement="Bottom">
+            <ListView x:Name="lv_Year" SelectionMode="Single" PreviewMouseWheel="Lv_Year_PreviewMouseWheel" 
+                        SelectionChanged="Lv_Year_SelectionChanged" ScrollViewer.ScrollChanged="Lv_Year_ScrollChanged"
+                        ScrollViewer.VerticalScrollBarVisibility="Auto" Height="100" >
+            </ListView>
+        </Popup>
+        <TextBox  Grid.Column="2" x:Name="txt_Month" Text="{Binding Month,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                PreviewKeyDown="Txt_Month_PreviewKeyDown" PreviewTextInput="Txt_PreviewTextInput" 
+                TextChanged="Txt_TextChanged" LostFocus="Txt_LostFocus" PreviewMouseLeftButtonUp="Txt_Month_PreviewMouseLeftButtonUp" />
+        <Label Grid.Column="3" Content="—" >
+        </Label>
+        <Popup x:Name="pop_Month" LostFocus="Lv_popup_LostFocus"
+                StaysOpen="False" PlacementTarget="{Binding ElementName=txt_Month}" Placement="Bottom">
+            <ListView x:Name="lv_Month" SelectionMode="Single" 
+                        SelectionChanged="Lv_Month_SelectionChanged" 
+                        ScrollViewer.VerticalScrollBarVisibility="Auto" Height="100" >
+            </ListView>
+        </Popup>
+        <TextBox  Grid.Column="4" x:Name="txt_Day" Text="{Binding Day,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                 PreviewKeyDown="Txt_Day_PreviewKeyDown" PreviewTextInput="Txt_PreviewTextInput" 
+                 TextChanged="Txt_TextChanged" LostFocus="Txt_LostFocus" PreviewMouseLeftButtonUp="Txt_Day_PreviewMouseLeftButtonUp"/>
+        <Popup x:Name="pop_Day" LostFocus="Lv_popup_LostFocus"
+                StaysOpen="False" PlacementTarget="{Binding ElementName=txt_Day}" Placement="Bottom">
+            <ListView x:Name="lv_Day" SelectionMode="Single" 
+                        SelectionChanged="Lv_Day_SelectionChanged" 
+                        ScrollViewer.VerticalScrollBarVisibility="Auto" Height="100">
+            </ListView>
+        </Popup>
+        <!--<Button Grid.Row="2" Grid.Column="0" x:Name="btn_DownYear" Style="{StaticResource DownButtonStyle}" Click="Btn_DownYear_Click"/>
+        <Button Grid.Row="2" Grid.Column="2" x:Name="btn_DownMonth" Style="{StaticResource DownButtonStyle}" Click="Btn_DownMonth_Click" />
+        <Button Grid.Row="2" Grid.Column="4" x:Name="btn_DownDay" Style="{StaticResource DownButtonStyle}" Click="Btn_DownDay_Click"/>-->
+    </Grid>
+</UserControl>
