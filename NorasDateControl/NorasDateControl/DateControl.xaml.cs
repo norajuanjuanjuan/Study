@@ -317,6 +317,12 @@ namespace NorasDateControl
            return new DateTime(Convert.ToInt32(SelectedDate.Year), Convert.ToInt32(SelectedDate.Month),
                                      Convert.ToInt32(SelectedDate.Day));
         }
+        public void SetDate(DateTime date)
+        {
+            txt_Year.Text = date.Year.ToString().PadLeft(4, '0');
+            txt_Month.Text = date.Month.ToString().PadLeft(2, '0');
+            txt_Day.Text = date.Day.ToString().PadLeft(2, '0');
+        }
         #endregion
 
         private void Txt_Year_PreviewKeyDown(object sender, KeyEventArgs e)
