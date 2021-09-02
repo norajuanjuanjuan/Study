@@ -1,0 +1,54 @@
+version: '3.6'
+services:
+  consul1:
+    image: consul:latest
+    container_name: consul1
+    restart: always
+    command: agent -server -client=0.0.0.0 -bootstrap-expect=2 -node=consul1
+    volumes:
+      - /user/local/docker_my/consul/consul1/data:/consul/data
+      - /user/local/docker_my/consul/consul1/config:/consul/config
+  consul2:
+    image: consul:latest
+    container_name: consul2
+    restart: always
+    command: agent -server -client=0.0.0.0 -retry-join=consul1 -node=consul2
+    volumes:
+      - /user/local/docker_my/consul/consul2/data:/consul/data
+      - /user/local/docker_my/consul/consul2/config:/consul/config
+  consul3:
+    image: consul:latest
+    container_name: consul3
+    restart: always
+    command: agent -server -client=0.0.0.0 -retry-join=consul1 -node=consul3
+    volumes:
+      - /user/local/docker_my/consul/consul3/data:/consul/data
+      - /user/local/docker_my/consul/consul3/config:/consul/config
+  consul4:
+    image: consul:latest
+    container_name: consul4
+    restart: always
+    command: agent -server -client=0.0.0.0 -retry-join=consul1 -node=consul4
+    volumes:
+      - /user/local/docker_my/consul/consul4/data:/consul/data
+      - /user/local/docker_my/consul/consul4/config:/consul/config
+  client1:
+    image: consul:latest
+    container_name: client1
+    restart: always
+    ports:
+      - 8500:8500
+    command: agent -client=0.0.0.0 -retry-join=consul1 -ui -node=client1
+    volumes:
+      - /user/local/docker_my/consul/client1/data:/consul/data
+      - /user/local/docker_my/consul/client1/config:/consul/config
+  client2:
+    image: consul:latest
+    container_name: client2
+    restart: always
+    ports:
+      - 8501:8500
+    command: agent -client=0.0.0.0 -retry-join=consul1 -ui -node=client2
+    volumes:
+      - /user/local/docker_my/consul/client2/data:/consul/data
+      - /user/local/docker_my/consul/client2/config:/consul/config
