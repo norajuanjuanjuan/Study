@@ -6,11 +6,11 @@ services:
     container_name: apicore_comp
     build: ./ReportApi_Core
     ports: 
-     - "9016:80"
+     - "9110:80"
   webcore_comp:
     environment:
      - TZ=Asia/Shanghai
     container_name: webcore_comp
     build: ./WebCore
     ports:
-     - "9017:80"
+     - "9000:80"
