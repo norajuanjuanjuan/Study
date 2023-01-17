@@ -1,0 +1,7 @@
+filebeat.inputs: # 6.3以前是 filebeat.prospectors:
+- type: log	# input类型,默认为log，6.0以前配置是 - input_type: log
+  paths:
+    - log/*.log
+output.logstash:
+  hosts: ["localhost:5044"]
+tail_files: false

@@ -1,0 +1,112 @@
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+     -  /Log/SelectReport/*.log
+  fields:
+    index: SelectReport
+
+- type: log
+  enabled: true
+  paths:
+     -  /Log/ReportGuide/*.log
+  fields:
+    index: ReportGuide
+
+- type: log
+  enabled: true
+  paths:
+     -  /Log/DeepGuide/*.log
+  fields:
+    index: DeepGuide
+
+- type: log
+  enabled: true
+  paths:
+     -  /Log/CustomGuide/*.log
+  fields:
+    index: CustomGuide 
+
+- type: log
+  enabled: true
+  paths:
+     -  /Log/ChartsOperation/*.log
+  fields:
+    index: ChartsOperation
+
+- type: log
+  enabled: true
+  paths:
+     -  /Log/LinkJump/*.log
+  fields:
+    index: LinkJump
+
+- type: log
+  enabled: true
+  paths:
+     -  /Log/$pageview/*.log
+  fields:
+    index: pageview
+
+processors:
+- decode_json_fields:
+    fields: ["message"]
+    target: ""
+    process_array: true
+    max_depth: 2
+    #overwrite keys: true
+# - drop fields:
+#     fields: ["true", "ecs", "agent", "log"]
+
+setup.template.enabled: false
+# 自定义ES的索引需要把ilm设置为false
+setup.ilm.enabled: false
+
+output.elasticsearch:
+  #hosts: ["119.91.251.55:9200"]
+  hosts: ["localhost:9200"]
+  # ssl.certificate: "data/ca.pem"
+  # ssl.key: "data/ca.key"
+  #api_key: "el9EVWRvVUJCZUp6eUtrSXFxdUg6WWltdmtXNTdRNC01RjBPTWlDc2dEZw=="
+  protocol: http
+  pipeline: "test-pipeline"
+  # username: "zjzt"
+  # password: "zjzt#123456" 
+  username: "elastic"
+  password: "wqhk7FQ=Pyps+RPSXV7j"
+  indices:
+    - index: "01_SelectReport"
+      when.equals:
+        fields:
+          index: "SelectReport"
+
+    - index: "02_ReportGuide"
+      when.equals:
+        fields:
+          index: "ReportGuide"
+
+    - index: "03_DeepGuide"
+      when.equals:
+        fields:
+          index: "DeepGuide"
+    
+    - index: "04_CustomGuide"
+      when.equals:
+        fields:
+          index: "CustomGuide"
+
+    - index: "05_ChartsOperation"
+      when.equals:
+        fields:
+          index: "ChartsOperation"
+          
+    - index: "06_LinkJump"
+      when.equals:
+        fields:
+          index: "LinkJump"
+          
+    - index: "07_pageview"
+      when.equals:
+        fields:
+          index: "pageview"
+          
